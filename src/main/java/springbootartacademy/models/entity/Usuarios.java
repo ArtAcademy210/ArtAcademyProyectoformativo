@@ -20,11 +20,23 @@ private String nombreusuario;
 	
 private String contraseña;
 	@Column(length=50, nullable=false, unique=true)
+	
 private String correo;
 	@ManyToMany
+	
 private Set<Roles> roles;
 @Column(name="reset_password_token", length=45, nullable=true)
+
 private String resetPasswordToken;
+
+private boolean estado; 
+
+	public boolean isEstado() {
+	return estado;
+}
+public void setEstado(boolean estado) {
+	this.estado = estado;
+}
 	public Long getId() {
 		return id;
 	}
