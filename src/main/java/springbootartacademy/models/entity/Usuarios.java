@@ -20,16 +20,29 @@ private String nombreusuario;
 	
 private String contraseña;
 	@Column(length=50, nullable=false, unique=true)
+	
 private String correo;
+<<<<<<< HEAD
 	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinColumn(name="usuarios_id")
 private Set<Roles> roles ;
+=======
+	@ManyToMany
+	
+private Set<Roles> roles;
+>>>>>>> 97e5f6495b0007197334c956edd606b74dc84fd5
 @Column(name="reset_password_token", length=45, nullable=true)
+
 private String resetPasswordToken;
+<<<<<<< HEAD
 @Column(name="verification_token", length=45, updatable=false, nullable=false)
 private String verification;
 private boolean estado;
 
+=======
+
+private boolean estado; 
+>>>>>>> 97e5f6495b0007197334c956edd606b74dc84fd5
 
 	public boolean isEstado() {
 	return estado;
@@ -37,12 +50,15 @@ private boolean estado;
 public void setEstado(boolean estado) {
 	this.estado = estado;
 }
+<<<<<<< HEAD
 	public String getVerification() {
 	return verification;
 	}
 	public void setVerification(String verification) {
 	this.verification = verification;
 	}
+=======
+>>>>>>> 97e5f6495b0007197334c956edd606b74dc84fd5
 	public Long getId() {
 		return id;
 	}

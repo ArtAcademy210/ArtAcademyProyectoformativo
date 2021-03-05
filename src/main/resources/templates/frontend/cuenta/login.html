@@ -14,6 +14,7 @@
     <link rel="stylesheet" th:href="@{/frontend/css/style.css}">
     </head>
 <body>
+<<<<<<< HEAD
     <div layout:fragment="contenido">
         <!-- Main Content -->
         <div class="row">
@@ -39,6 +40,40 @@
                                     <button type="submit" class="btn btn-dark btn-block">Iniciar Sesión</button><hr>
                                     <p class="text-center">o</p>
                                     <div class="row ">
+=======
+	
+
+
+            <div  layout:fragment="contenido">
+                <!-- Main Content -->
+                <div class="row">
+                    <div class="col-12 mt-3 text-center text-uppercase">
+                        <h2>Login</h2>
+                    </div>
+                </div>
+					<form action="" method="post">
+                <main class="row">
+                
+                    <div class="col-lg-4 col-md-6 col-sm-8 mx-auto bg-white py-3 mb-4">
+                        <div class="row">
+                            <div class="col-12">
+                                <form th:action="@{/login}" method="post">
+                                    <div class="form-group">
+                                        <label for="email">Usuario</label>
+                                        <input type="text" id="username" name="username" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Contraseña</label>
+                                        <input type="password" id="password" name="password" class="form-control" required>
+                                    </div>
+                                    
+                                    
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-dark btn-block">Iniciar Sesión</button>
+                                        <hr>
+                                        <p class="text-center">o</p>
+                                        <div class="row ">
+>>>>>>> 97e5f6495b0007197334c956edd606b74dc84fd5
                                         <div class="col-lg text-center" style="font-size: 90; font-family: arial;" >
                                             <a th:href="@{/recuperarpassword}">Recuperar contraseña?</a>
                                         </div>

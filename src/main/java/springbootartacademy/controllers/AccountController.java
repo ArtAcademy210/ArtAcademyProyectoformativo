@@ -11,7 +11,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+<<<<<<< HEAD
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+=======
+import org.springframework.web.bind.annotation.RequestParam;
+
+>>>>>>> 97e5f6495b0007197334c956edd606b74dc84fd5
 import net.bytebuddy.utility.RandomString;
 import springbootartacademy.models.dao.IRolesDao;
 import springbootartacademy.models.entity.Roles;
@@ -21,13 +26,18 @@ import springbootartacademy.models.service.IUsuariosService;
 import springbootartacademy.utils.UsersNotFoundException;
 import springbootartacademy.utils.Utilidad;
 import java.io.UnsupportedEncodingException;
+<<<<<<< HEAD
 import java.util.Arrays;
 import java.util.List;
+=======
+import java.security.Principal;
+>>>>>>> 97e5f6495b0007197334c956edd606b74dc84fd5
 
 import javax.mail.MessagingException;
 
 @Controller
 public class AccountController {
+<<<<<<< HEAD
 	@Autowired
 	private IResetPasswordService passser;
 	@Autowired
@@ -45,6 +55,22 @@ public String registro(Model model) {
 	model.addAttribute("roles",listaroles);
 	model.addAttribute("usuario",new Usuarios());
 	return "frontend/registro/registro";
+=======
+
+@Autowired
+private IResetPasswordService passser;
+@GetMapping("/login")
+
+public String login(@RequestParam(value="error",required = false) String error, Model model,Principal principal ) {
+	if(principal != null ) {
+		model.addAttribute("info", "La sesión sigue activa");
+		return "redirect:/inicio";
+	}
+	if(error != null ) {
+		model.addAttribute("error", "Los datos no coinciden");
+	}
+	return "frontend/cuenta/login";
+>>>>>>> 97e5f6495b0007197334c956edd606b74dc84fd5
 }
 
 @GetMapping("/recuperarpassword")

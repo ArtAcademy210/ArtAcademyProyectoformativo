@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="recursos/navbar">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8"/>
 <title>Insert title here</title>
 </head>
 <body>
@@ -458,6 +458,21 @@
                             </div>
                         </div>
                     </div>
+                    <div class="message-holder">
+        <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${info != null}">
+            <button type="button" class="close" data-dismiss="alert">
+                <small><i class="fas fa-times"></i></small>
+            </button>
+            <i class="fas fa-check-circle mr-2"></i>
+            <span th:text="${info}"></span>
+        </div>
+        <div >
+           
+        </div>
+        <div >
+          
+        </div>
+    </div>
                 </main>
                 <!-- Main Content -->
               
