@@ -7,33 +7,89 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import net.bytebuddy.utility.RandomString;
+import springbootartacademy.models.dao.IRolesDao;
+import springbootartacademy.models.entity.Roles;
 import springbootartacademy.models.entity.Usuarios;
 import springbootartacademy.models.service.IResetPasswordService;
+import springbootartacademy.models.service.IUsuariosService;
 import springbootartacademy.utils.UsersNotFoundException;
 import springbootartacademy.utils.Utilidad;
-
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.mail.MessagingException;
 
 @Controller
 public class AccountController {
-
-@Autowired
-private IResetPasswordService passser;
-@GetMapping("/login")
-public String login() {
-	return "frontend/cuenta/login";
+	@Autowired
+	private IResetPasswordService passser;
+	@Autowired
+	private IUsuariosService serviciousuario;
+	@Autowired
+	private IRolesDao rolesdao;
+	@GetMapping("/login")
+	public String login() {
+		return "frontend/cuenta/login";
+	}
+@GetMapping("/registro")
+public String registro(Model model) {
+	Roles rol = rolesdao.findByNombre("CLIENTE");
+	List<Roles> listaroles = Arrays.asList(rol);
+	model.addAttribute("roles",listaroles);
+	model.addAttribute("usuario",new Usuarios());
+	return "frontend/registro/registro";
 }
+
 @GetMapping("/recuperarpassword")
 public String resetContraseña(){
 	return "frontend/recuperarcontraseña/recuperarcontraseña";
 }
+@GetMapping("/registro/verificacion")
+public String registroverificacion(){
+	return "frontend/registro/verificacion";
+}
+
+@GetMapping("/mensajeRegistro")
+public String mensajeRegistro(){
+	return "frontend/registro/mensaje";
+}
+@PostMapping("/creandoregistro")
+public String creandoregistro( @ModelAttribute("usuario")Usuarios nuevousuario, Model model,HttpServletRequest request, BindingResult bindingResults, RedirectAttributes redirectAttributes) throws UnsupportedEncodingException, MessagingException{
+	Roles rol = rolesdao.findByNombre("CLIENTE");
+	List<Roles> listaroles = Arrays.asList(rol);
+	model.addAttribute("roles",listaroles);
+	model.addAttribute("usuario", nuevousuario);
+	model.addAttribute("correo", nuevousuario.getCorreo());
+	model.addAttribute("nombreusuario", nuevousuario.getNombreusuario());
+	boolean invalidFields = false;
+	if (bindingResults.hasErrors()) {
+		return "redirect:/registro";
+	}		
+	if (serviciousuario.findByNombreusuario(nuevousuario.getNombreusuario()) != null) {
+		model.addAttribute("nombreusuarioExists", "Error ese nombre de usuario ya existe!");
+		invalidFields = true;
+	}
+	if (serviciousuario.findByCorreo(nuevousuario.getCorreo()) != null) {
+		model.addAttribute("correoExists", "Error ese correo ya existe!");
+		invalidFields = true;
+	}	
+	if (invalidFields) {
+		return "redirect:/registro";
+	}
+	serviciousuario.saveUsuarios(nuevousuario);
+	String siteURL = Utilidad.getSitioUrl(request);
+	serviciousuario.sendVerificationEmail(nuevousuario, siteURL);
+	return "redirect:/mensajeRegistro";
+}
 @PostMapping("/resetpassword")
-public String resetPassword(HttpServletRequest request, Model model) {
+public String resetPassword(HttpServletRequest request, Model model) throws UnsupportedEncodingException, MessagingException {
 	String correo = request.getParameter("correo");
 	String token = RandomString.make(45);
 	try {
@@ -46,11 +102,17 @@ public String resetPassword(HttpServletRequest request, Model model) {
 		
 		} catch (UsersNotFoundException e) {
 			model.addAttribute("error", e.getMessage());
-		}catch (UnsupportedEncodingException | MessagingException  e) {
-		model.addAttribute("error", "error al enviar el token");
-	} 
+		}
 	return "frontend/recuperarcontraseña/recuperarcontraseña";
 }
+	@GetMapping("/verificate")
+	public String verificando(@Param("code") String code,Model model)
+	{
+		boolean verifica = serviciousuario.verificacionenlace(code);
+		String paginaTitulo = verifica ? " ¡Verificacion Completa!" : " ¡Verificacion Fallida!";
+		model.addAttribute("paginaTitulo",paginaTitulo);
+		return "frontend/registro/verificacion" ;
+	}
 
 	@GetMapping("/formulariocontraseña")
 	public String formContraseña(@Param(value="token") String token, 

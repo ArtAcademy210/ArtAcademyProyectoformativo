@@ -1,13 +1,13 @@
 package springbootartacademy.models.entity;
 
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 
 @Entity
@@ -21,10 +21,28 @@ private String nombreusuario;
 private String contraseña;
 	@Column(length=50, nullable=false, unique=true)
 private String correo;
-	@ManyToMany
-private Set<Roles> roles;
+	@ManyToMany(fetch=FetchType.EAGER)
+	@JoinColumn(name="usuarios_id")
+private Set<Roles> roles ;
 @Column(name="reset_password_token", length=45, nullable=true)
 private String resetPasswordToken;
+@Column(name="verification_token", length=45, updatable=false, nullable=false)
+private String verification;
+private boolean estado;
+
+
+	public boolean isEstado() {
+	return estado;
+}
+public void setEstado(boolean estado) {
+	this.estado = estado;
+}
+	public String getVerification() {
+	return verification;
+	}
+	public void setVerification(String verification) {
+	this.verification = verification;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -61,6 +79,4 @@ private String resetPasswordToken;
 	public void setResetPasswordToken(String resetPasswordToken) {
 		this.resetPasswordToken = resetPasswordToken;
 	}
-	
-	
 }
