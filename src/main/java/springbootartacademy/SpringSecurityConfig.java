@@ -30,13 +30,16 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
  @Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-		.antMatchers("/frontend/css/**", "/frontend/js/**", "/frontend/webfonts/**", "/images/**", "/recuperarpassword/**", "/resetpassword/**", "/formulariocontraseña/**", "/cambiarcontraseña/**","/error403/**").permitAll()
+		.antMatchers("/frontend/css/**", "/frontend/js/**", "/frontend/webfonts/**", "/images/**", "/recuperarpassword/**", "/resetpassword/**", "/formulariocontraseña/**", "/cambiarcontraseña/**").permitAll()
 		.antMatchers("/inicio").hasAuthority("ADMIN")
 		.anyRequest().authenticated()
 		.and()
 		.formLogin().loginPage("/login") .permitAll()
 		.and()
-		.logout().permitAll();
+		.logout().permitAll()
+		.and()
+		.exceptionHandling().accessDeniedPage("/error403");
+		
 	}
  @Autowired
 	protected void configurerGlobal(AuthenticationManagerBuilder auth) throws Exception {
