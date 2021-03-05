@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import net.bytebuddy.utility.RandomString;
 import springbootartacademy.models.entity.Usuarios;
 import springbootartacademy.models.service.IResetPasswordService;
@@ -16,6 +18,7 @@ import springbootartacademy.utils.UsersNotFoundException;
 import springbootartacademy.utils.Utilidad;
 
 import java.io.UnsupportedEncodingException;
+import java.security.Principal;
 
 import javax.mail.MessagingException;
 
@@ -25,7 +28,15 @@ public class AccountController {
 @Autowired
 private IResetPasswordService passser;
 @GetMapping("/login")
-public String login() {
+
+public String login(@RequestParam(value="error",required = false) String error, Model model,Principal principal ) {
+	if(principal != null ) {
+		model.addAttribute("info", "La sesión sigue activa");
+		return "redirect:/inicio";
+	}
+	if(error != null ) {
+		model.addAttribute("error", "Los datos no coinciden");
+	}
 	return "frontend/cuenta/login";
 }
 @GetMapping("/recuperarpassword")

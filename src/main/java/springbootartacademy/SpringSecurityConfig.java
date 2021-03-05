@@ -30,11 +30,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
  @Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-		.antMatchers("/frontend/css/**", "/frontend/js/**", "/frontend/webfonts/**", "/images/**").permitAll()
-		.antMatchers("/home").hasAuthority("ADMIN")
+		.antMatchers("/frontend/css/**", "/frontend/js/**", "/frontend/webfonts/**", "/images/**", "/recuperarpassword/**", "/resetpassword/**", "/formulariocontraseña/**", "/cambiarcontraseña/**","/error403/**").permitAll()
+		.antMatchers("/inicio").hasAuthority("ADMIN")
 		.anyRequest().authenticated()
 		.and()
-		.formLogin().permitAll()
+		.formLogin().loginPage("/login") .permitAll()
 		.and()
 		.logout().permitAll();
 	}
